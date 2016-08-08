@@ -31,7 +31,7 @@ void createTerrain(ChSystem & sys, double dia, double W, double H, double L)
 	int x = W/dia-3;
 	int y = H/dia;
 	int z = L/dia-3;
-	double mass = 0.05 * 4/3*CH_C_PI*pow(particleDiameter/2.0,3.0);
+	double mass = 0.05 * 4/3*CH_C_PI*pow(particleDiameter/2.0,3.0);// density * volume
 	double inertia = 0.4*mass*particleDiameter*particleDiameter/4.0;
 
 	ChSharedBodyPtr particle;
@@ -42,12 +42,12 @@ void createTerrain(ChSystem & sys, double dia, double W, double H, double L)
 			for (int k=3; k<z; k++)
 			{
 				particle=ChSharedBodyPtr(new ChBody);
-				particle->SetPos(ChVector<>(-W/2.0,-boxDrop,-(chassisL/2.0)-2.0) + ChVector<>(i+CHrandom()-0.5,j,k+CHrandom()-0.5) * dia);
-				particle->SetMass(mass); // density * volume
+				particle->SetPos(ChVector<>(-W/2.0,-boxDrop,-(chassisL/2.0)-2.0) + ChVector<>(i+ChRandom()-0.5,j,k+ChRandom()-0.5) * dia);
+				particle->SetMass(mass); 
 				particle->SetInertiaXX(ChVector<>(inertia,inertia,inertia));
 				particle->GetCollisionModel()->AddSphere(dia/2.0);
 				particle->SetCollide(true);
-				particle->SetPos_dt(ChVector<>(CHrandom()-0.5,-CHrandom(),CHrandom()-0.5)*10 );
+				particle->SetPos_dt(ChVector<>(ChRandom()-0.5,-ChRandom(),ChRandom()-0.5)*10 );
 				sys.AddBody(particle);
 			}
 		}
@@ -384,7 +384,7 @@ int main(int argc, char* argv[])
 		{
 			simTime += timestep; 
 
-			// PERFORM SIMULATION UP TO chronoTime
+			// PERFORM SIMULATION UP TO simTime
 			my_system.DoFrameDynamics(simTime);
 
 			if (currFrame%everyFrame == 0 )
